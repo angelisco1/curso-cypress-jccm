@@ -21,11 +21,142 @@
       justify-content: center;
       align-items: center;
     }
+
+    #caja-doble-click {
+      width: 100px;
+      height: 100px;
+      background-color: blue;
+    }
+
+    #caja-doble-click.db-clicked {
+      background-color: yellow;
+    }
   </style>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <h1>Pruebas con Cypress</h1>
+
+  <div class="center">
+    <div id="js-popups">
+      <button type="button" id="btn-alert" data-cy="btn-alert">Mostrar un Alert</button>
+      <button type="button" id="btn-confirm" data-cy="btn-confirm">Quitar el mensaje</button>
+      <p id="mensaje-confirm">Mensaje: <span id="confirm-nombre" data-cy="confirm-nombre">The Marathon Continues</span>
+      </p>
+      <button type="button" id="btn-prompt">Mostrar tu nombre</button>
+      <p id="mensaje-prompt">Nombre: <span id="prompt-nombre"></span></p>
+    </div>
+  </div>
+
+  <div class="center">
+    Mira las cookies desde las "Herramientas del desarrollador > Application > Cookies"
+  </div>
+  <script>
+    const valorCookie = 'Cookies, cookies...';
+    document.cookie = `miCookie=${valorCookie};`;
+  </script>
+
+  <div class="center">
+    <select id="select-coches-electricos-multiple" data-cy="selector-coches-multiple" multiple>
+      <option value="polestar-2">Polestar 2</option>
+      <option value="nio-et7">Nio eT7</option>
+      <option value="tesla-model-3">Tesla Model 3</option>
+      <option value="xpeng-p7">Xpeng P7</option>
+    </select>
+  </div>
+
+  <div class="center">
+    <select id="select-coches-electricos" data-cy="selector-coches">
+      <option value="polestar-2">Polestar 2</option>
+      <option value="nio-et7">Nio eT7</option>
+      <option value="tesla-model-3">Tesla Model 3</option>
+      <option value="xpeng-p7">Xpeng P7</option>
+    </select>
+  </div>
+
+
+  <div class="center">
+    <div id="hobbies" data-cy="hobbies">
+      <div>
+        <input type="checkbox" id="hobby1" name="hobby" value="cine">Cine
+      </div>
+      <div>
+        <input type="checkbox" id="hobby2" name="hobby" value="musica">Música
+      </div>
+      <div>
+        <input type="checkbox" id="hobby3" name="hobby" value="series" checked>Series
+      </div>
+      <div>
+        <input type="checkbox" id="hobby4" name="hobby" value="tenis" checked>Tenis
+      </div>
+      <div>
+        <input type="checkbox" id="hobby5" name="hobby" value="baloncesto">Baloncesto
+      </div>
+    </div>
+  </div>
+
+
+  <div class="center">
+    <div id="caja-doble-click" data-cy="caja-dblclick"></div>
+  </div>
+  <script>
+    document.getElementById('caja-doble-click').addEventListener('dblclick', (event) => {
+      event.target.className = event.target.className.includes('db-clicked') ? '' : 'db-clicked';
+    })
+  </script>
+
+
+  <div class="center">
+    <div id="panel-codigo-secreto">
+      <div id="pantalla-codigo" data-cy="display"></div>
+      <div id="teclado">
+        <div class="fila-teclas">
+          <div class="tecla tecla-num" id="p1" data-cy="tecla1">1</div>
+          <div class="tecla tecla-num" id="p2" data-cy="tecla2">2</div>
+          <div class="tecla tecla-num" id="p3" data-cy="tecla3">3</div>
+        </div>
+        <div class="fila-teclas">
+          <div class="tecla tecla-num" id="p4" data-cy="tecla4">4</div>
+          <div class="tecla tecla-num" id="p5" data-cy="tecla5">5</div>
+          <div class="tecla tecla-num" id="p6" data-cy="tecla6">6</div>
+        </div>
+        <div class="fila-teclas">
+          <div class="tecla tecla-num" id="p7" data-cy="tecla7">7</div>
+          <div class="tecla tecla-num" id="p8" data-cy="tecla8">8</div>
+          <div class="tecla tecla-num" id="p9" data-cy="tecla9">9</div>
+        </div>
+        <div class="fila-teclas">
+          <div class="tecla tecla-clear" id="pclear" data-cy="teclaClear">CLD</div>
+          <div class="tecla tecla-num" id="p0" data-cy="tecla0">0</div>
+          <div class="tecla tecla-del" id="pdel" data-cy="teclaDel">DEL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+
+  <div class="center">
+    <div id="caja-retry-ability"></div>
+  </div>
+
+  <script>
+    const btn3500 = document.createElement('button');
+    btn3500.id = "btn-lazy-3500";
+    btn3500.innerText = 'Soy un botón perezoso';
+    setTimeout(() => {
+      document.getElementById('caja-retry-ability').appendChild(btn3500);
+    }, 3500);
+
+    const btn5500 = document.createElement('button');
+    btn5500.id = "btn-lazy-5500";
+    btn5500.innerText = 'Soy un botón más perezoso todavía';
+    setTimeout(() => {
+      document.getElementById('caja-retry-ability').appendChild(btn5500);
+    }, 5500);
+  </script>
 
   <div class="center">
     <h2 id="titulo">Listados</h2>
