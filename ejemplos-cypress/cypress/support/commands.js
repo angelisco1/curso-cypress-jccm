@@ -7,10 +7,28 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
+import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
+
+addMatchImageSnapshotCommand({
+  failureThresholdType: 'percent'
+});
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add('login', (email, password) => {
+
+  cy.get('#email')
+    .type(email)
+
+  cy.get('#password')
+    .type(password)
+
+  return cy.get('form')
+    .submit()
+
+})
+
+
 //
 //
 // -- This is a child command --

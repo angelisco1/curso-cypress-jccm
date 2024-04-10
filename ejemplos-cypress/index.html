@@ -10,8 +10,9 @@
     body {
       height: 100vh;
       width: 100vw;
-      background-color: #242424;
-      color: white;
+      /* background-color: #242424; */
+      background-color: white;
+      color: black;
     }
 
     .center {
@@ -31,13 +32,127 @@
     #caja-doble-click.db-clicked {
       background-color: yellow;
     }
+
+    .caja {
+      width: 100px;
+      height: 100px;
+    }
+
+    .bg-gold {
+      background-color: gold;
+    }
   </style>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>Pruebas con Cypress</h1>
+
+  <header>
+    <h1>Título de la página</h1>
+  </header>
+
+  <main>
+    <p>Este es un párrafo de texto.</p>
+    <img src="imagen.jpg" alt="Descripción">
+    <a href="https://www.ejemplo.com">Un link</a>
+  </main>
+
+  <!--
+  <h1 data-cy="titulo1">Pruebas con Cypress</h1>
+
+
+  <div class="center">
+    <div class="caja bg-gold"></div>
+  </div>
+
+
+
+
+  <div class="center">
+    <div id="caja-edicion">
+      <label for="modoEdicion">Edición deshabilitada:</label>
+      <input type="checkbox" id="modoEdicion">
+    </div>
+    <div>
+      <label for="nombre">Nombre</label>
+      <input type="text" name="nombre" id="nombre">
+    </div>
+  </div>
+  <script>
+    const modoEdicionDesactivado = Math.floor(Math.random() * 3) === 0;
+    const checkEdicion = document.getElementById('modoEdicion');
+    const inputNombre = document.getElementById('nombre');
+    checkEdicion.checked = modoEdicionDesactivado;
+    inputNombre.disabled = modoEdicionDesactivado;
+    checkEdicion.addEventListener('click', () => {
+      const checked = checkEdicion.checked;
+      checkEdicion.checked = checked;
+      inputNombre.disabled = checked;
+    })
+  </script>
+
+
+
+  <p>Tiempo para hoy: <span id="tiempo"></span></p>
+  <script>
+    function getEmoji() {
+      return fetch('http://localhost:8081/get-weather')
+        .then(resp => resp.json())
+        .then(({ weather }) => {
+          switch (weather) {
+            case 'soleado': return '☀️';
+            case 'parcialmente-nublado': return '0';
+            case 'nublado': return '☁️';
+            case 'lluvioso': return '2';
+            case 'tormenta': return '3';
+            case 'nevado': return '🌨️';
+          }
+        });
+    }
+    getEmoji().then(val => {
+      document.getElementById('tiempo').innerText = val;
+    })
+  </script>
+
+
+  <div>
+    <button type="button" id="btn-ubicacion" data-cy="btn-ubicacion">¿Dónde estoy?</button>
+    <p>Ubicación: <span id="ciudad"></span></p>
+  </div>
+
+  <script>
+    document.getElementById('btn-ubicacion').addEventListener('click', () => {
+      navigator.geolocation.getCurrentPosition(position => {
+        const { coords } = position;
+        const { longitude, latitude } = coords;
+        console.log({ longitude, latitude })
+        fetch(`http://localhost:8081/get-city?lat=${latitude}&lon=${longitude}`)
+          .then(resp => resp.json())
+          .then(({ ciudad }) => {
+            document.getElementById('ciudad').innerText = ciudad;
+          })
+      })
+    })
+  </script>
+
+
+  <div class="center">
+    <div id="dashboard-screenshot" data-cy="dashboard-screenshot">
+      <div>
+        <h3>Datos de Charly Falco</h3>
+        <p>Email: <span id="email">cfalco@gmail.com</span></p>
+        <p>DNI: <span id="dni">00000000T</span></p>
+        <p>Saldo invertido: <span id="saldo">300000€</span></p>
+      </div>
+      <ul id="inversiones">
+        <li>50% - Hooly, Inc</li>
+        <li>30% - Pied Piper, Inc</li>
+        <li>20% - Aviato, Inc</li>
+      </ul>
+    </div>
+  </div>
+
 
   <div class="center">
     <div id="js-popups">
@@ -45,8 +160,8 @@
       <button type="button" id="btn-confirm" data-cy="btn-confirm">Quitar el mensaje</button>
       <p id="mensaje-confirm">Mensaje: <span id="confirm-nombre" data-cy="confirm-nombre">The Marathon Continues</span>
       </p>
-      <button type="button" id="btn-prompt">Mostrar tu nombre</button>
-      <p id="mensaje-prompt">Nombre: <span id="prompt-nombre"></span></p>
+      <button type="button" id="btn-prompt" data-cy="btn-prompt">Mostrar tu nombre</button>
+      <p id="mensaje-prompt">Nombre: <span id="prompt-nombre" data-cy="prompt-nombre"></span></p>
     </div>
   </div>
 
@@ -176,7 +291,7 @@
 
   <div class="center">
     <h2 id="titulo2">Interacciones</h2>
-  </div>
+  </div> -->
 
 </body>
 

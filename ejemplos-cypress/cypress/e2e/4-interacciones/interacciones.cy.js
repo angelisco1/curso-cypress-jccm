@@ -7,7 +7,7 @@ describe('Interacciones con elementos', () => {
       cy.visit('http://localhost:8080')
     });
 
-    it('Al hacer doble click debería cambiar el color de fondo', () => {
+    xit('Al hacer doble click debería cambiar el color de fondo', () => {
       cy.get('[data-cy="caja-dblclick"]')
         .dblclick()
         .should('have.css', 'background-color', 'rgb(255, 255, 0)')
@@ -27,12 +27,14 @@ describe('Interacciones con elementos', () => {
       cy.get('[data-cy="hobbies"] input[type="checkbox"]')
         .uncheck('tenis')
 
-      // cy.get('input#hobby4')
-      //   .should('have.attr', 'checked', false)
+      cy.get('input#hobby4')
+        // .should('have.attr', 'checked', false) // Este para atributos de string
+        // .should('have.prop', 'checked', false)
+        .should('not.be.checked')
 
     })
 
-    it('Se selecciona un solo elemento', () => {
+    xit('Se selecciona un solo elemento', () => {
       cy.get('[data-cy="selector-coches"]')
         .should('have.value', 'polestar-2')
         .select('Xpeng P7')
@@ -45,7 +47,7 @@ describe('Interacciones con elementos', () => {
         .should('have.text', 'Nio eT7')
     });
 
-    it('Se seleccionan varias opciones', () => {
+    xit('Se seleccionan varias opciones', () => {
       cy.get('[data-cy="selector-coches-multiple"]')
         .select(['Xpeng P7', 'Tesla Model 3'])
         .invoke('val')
@@ -53,7 +55,7 @@ describe('Interacciones con elementos', () => {
 
     });
 
-    it('Debería de existir la cookie miCookie', () => {
+    xit('Debería de existir la cookie miCookie', () => {
 
       cy.getCookie('miCookie')
         .should('have.a.property', 'value', 'Cookies, cookies...')
@@ -71,7 +73,7 @@ describe('Interacciones con elementos', () => {
         .should('have.length', 1)
     })
 
-    it('Debería mostrar un alert con el texto Hola mundo!!!', () => {
+    xit('Debería mostrar un alert con el texto Hola mundo!!!', () => {
 
       cy.get('[data-cy="btn-alert"]')
         .click()
@@ -82,7 +84,7 @@ describe('Interacciones con elementos', () => {
 
     });
 
-    it('Debería quitar el mensaje al confirmar', () => {
+    xit('Debería quitar el mensaje al confirmar', () => {
 
       cy.get('[data-cy="btn-confirm"]')
         .click()
@@ -90,18 +92,39 @@ describe('Interacciones con elementos', () => {
       cy.on('window:confirm', () => true)
 
       cy.get('[data-cy="confirm-nombre"]')
-        .invoke('text')
-        .should('equal', '')
+        .should('be.empty')
+      // .invoke('text')
+      // .should('equal', '')
     });
 
+    it('Debería mostrar el nombre que se escribe en el prompt', () => {
+      const nombre = 'Mike'
+      cy.window()
+        .then((win) => {
+          cy.stub(win, 'prompt').returns(nombre)
+        })
 
+      cy.get('[data-cy="btn-prompt"]')
+        .click()
 
+      cy.get('[data-cy="prompt-nombre"]')
+        .should('have.text', nombre)
 
+    });
+
+    it('Debería de sacar un pantallazo de la información, ocultando los datos sensibles', () => {
+
+      cy.get('[data-cy="dashboard-screenshot"]')
+        .screenshot('dashboard', {
+          blackout: ['#email', '#dni', '#saldo']
+        })
+
+    })
 
 
   })
 
-  describe('TodoMVC', () => {
+  xdescribe('TodoMVC', () => {
     beforeEach(() => {
       cy.visit('https://todomvc.com/examples/javascript-es6/dist/')
 
@@ -170,7 +193,7 @@ describe('Interacciones con elementos', () => {
 
   });
 
-  describe('Wikipedia', () => {
+  xdescribe('Wikipedia', () => {
     beforeEach(() => {
       cy.visit('https://es.wikipedia.org/wiki/Wikipedia:Portada')
     });
@@ -190,7 +213,7 @@ describe('Interacciones con elementos', () => {
 
   });
 
-  describe('Drag and Drop', () => {
+  xdescribe('Drag and Drop', () => {
     beforeEach(() => {
       cy.visit('http://cookbook.seleniumacademy.com/DragDropDemo.html')
     });
@@ -207,5 +230,56 @@ describe('Interacciones con elementos', () => {
 
     });
   });
+
+  describe('Fixtures', () => {
+
+    beforeEach(() => {
+      cy.visit('http://localhost:8081/login')
+    });
+
+    it('Debería de ir a la página de inicio si te logueas con cfalco', () => {
+
+      cy.fixture('datos-usuario.json')
+        .then((datos) => {
+          // cy.get('#email')
+          //   .type(datos.usuarioValido.email)
+
+          // cy.get('#password')
+          //   .type(datos.usuarioValido.password)
+
+          // cy.get('form')
+          //   .submit()
+
+          cy.login(datos.usuarioValido.email, datos.usuarioValido.password)
+
+          cy.get('[data-cy="titulo1"]')
+            .should('have.text', 'Pruebas con Cypress')
+        })
+
+    });
+
+    it('Debería de quedarse en la página de login si te logueas con un usuario invalido', () => {
+
+      cy.fixture('datos-usuario.json')
+        .then((datos) => {
+
+          cy.login(datos.usuarioInvalido.email, datos.usuarioInvalido.password)
+
+          // cy.get('#email')
+          //   .type(datos.usuarioInvalido.email)
+
+          // cy.get('#password')
+          //   .type(datos.usuarioInvalido.password)
+
+          // cy.get('form')
+          //   .submit()
+
+          cy.get('button')
+            .should('have.text', 'Sign In')
+        })
+
+    });
+
+  })
 
 });

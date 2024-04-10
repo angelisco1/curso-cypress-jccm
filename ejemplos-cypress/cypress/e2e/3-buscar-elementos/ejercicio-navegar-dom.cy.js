@@ -5,20 +5,24 @@ describe('Lab: Navegar por el DOM', () => {
   it('Por separado', () => {
     cy.visit('http://www.w3schools.com/html/html_tables.asp')
 
+    cy.get('#customers tr').as('filasTabla1')
+
     cy.get('#accept-choices')
       .click()
 
-    cy.get('#customers tr')
+    // cy.get('#customers tr')
+    cy.get('@filasTabla1')
       .should('have.length', 7)
 
-    cy.get('#customers tr')
+    // cy.get('#customers tr')
+    cy.get('@filasTabla1')
       .last()
       .children()
       .should('have.length', 3)
 
 
     let numFilasDespuesDeLa5 = 0
-    cy.get('#customers tr')
+    cy.get('@filasTabla1')
       .each((elemTr, index) => {
         if (index > 4) {
           numFilasDespuesDeLa5 += 1
